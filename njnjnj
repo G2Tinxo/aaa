@@ -1,0 +1,131 @@
+import tkinter as tk
+from tkinter import messagebox
+
+
+class TitanicAkinator:
+    def _init_(self):
+        self.question_index = 0
+        self.responses = []
+        self.current_guess = ""
+
+        self.questions = [
+            "¿Es el personaje un pasajero del Titanic?",
+            "¿Es el personaje un miembro de la tripulación?",
+            "¿El personaje sobrevive al hundimiento?",
+            "¿El personaje tiene un romance en la película?",
+            "¿El personaje es un oficial de alto rango?",
+            "¿El personaje aparece en primera clase?",
+            "¿El personaje aparece en segunda clase?",
+            "¿El personaje aparece en tercera clase?",
+            "¿El personaje es ficticio?",
+            "¿El personaje está basado en una persona real?",
+            "¿El personaje es interpretado por Leonardo DiCaprio?",
+            "¿El personaje es interpretado por Kate Winslet?",
+            "¿El personaje es un personaje principal en la película?",
+            "¿El personaje es un personaje secundario en la película?",
+            "¿El personaje es una figura histórica real?"
+        ]
+
+        self.answers = [
+            ['sí', 'no'],
+            ['sí', 'no'],
+            ['sí', 'no', 'quizás'],
+            ['sí', 'no', 'quizás'],
+            ['sí', 'no'],
+            ['sí', 'no'],
+            ['sí', 'no'],
+            ['sí', 'no'],
+            ['sí', 'no'],
+            ['sí', 'no'],
+            ['sí', 'no'],
+            ['sí', 'no'],
+            ['sí', 'no'],
+            ['sí', 'no'],
+            ['sí', 'no']
+        ]
+
+        self.characters = [
+            "Jack Dawson",
+            "Rose DeWitt Bukater",
+            "Thomas Andrews",
+            "Molly Brown",
+            "Cal Hockley",
+            "Ruth DeWitt Bukater",
+            "Fabrizio De Rossi",
+            "Thomas Ryan",
+            "Captain Edward Smith",
+            "Captain Smith",
+            "J. Bruce Ismay",
+            "Spicer Lovejoy",
+            "Brock Lovett",
+            "Lizzy Calvert",
+            "Harold Lowe"
+        ]
+
+    def check_answer(self, response):
+        self.responses.append(response)
+
+        if response in self.answers[self.question_index]:
+            self.question_index += 1
+
+        if self.question_index >= len(self.questions):
+            if len(self.characters) > 0:
+                self.current_guess = self.characters[0]
+                self.characters.pop(0)
+            else:
+                self.current_guess = "No se ha encontrado ningún personaje."
+
+            messagebox.showinfo("¡Adiviné!", "El personaje en el que estás pensando es " + self.current_guess + "!")
+            self.start_game()
+        else:
+            self.ask_question()
+
+    def ask_question(self):
+        question = self.questions[self.question_index]
+        label_question.config(text=question)
+
+    def start_game(self):
+        self.question_index = 0
+        self.responses = []
+        self.current_guess = ""
+        self.ask_question()
+
+def on_yes():
+    game.check_answer('sí')
+
+def on_no():
+    game.check_answer('no')
+
+def on_maybe():
+    game.check_answer('quizás')
+
+game = TitanicAkinator()
+
+window = tk.Tk()
+window.title("Akinator Titanic")
+
+# Start button
+start_button = tk.Button(window, text="Start", command=game.start_game, width=15, height=3, bd=0, relief=tk.RAISED, bg="#4CAF50", fg="white")
+start_button.config(font=("Arial", 14, "bold"), borderwidth=0, highlightthickness=0, highlightbackground="black", highlightcolor="black")
+start_button.place(relx=0.5, rely=0.3, anchor=tk.CENTER)
+
+# Yes button
+yes_button = tk.Button(window, text="Yes", command=on_yes, width=10, height=2, bd=0, relief=tk.RAISED, bg="#2196F3", fg="white")
+yes_button.config(font=("Arial", 14, "bold"), borderwidth=0, highlightthickness=0, highlightbackground="black", highlightcolor="black")
+yes_button.place(relx=0.3, rely=0.6, anchor=tk.CENTER)
+
+# No button
+no_button = tk.Button(window, text="No", command=on_no, width=10, height=2, bd=0, relief=tk.RAISED, bg="#2196F3", fg="white")
+no_button.config(font=("Arial", 14, "bold"), borderwidth=0, highlightthickness=0, highlightbackground="black", highlightcolor="black")
+no_button.place(relx=0.7, rely=0.6, anchor=tk.CENTER)
+
+# Maybe button
+maybe_button = tk.Button(window, text="Maybe", command=on_maybe, width=10, height=2, bd=0, relief=tk.RAISED, bg="#2196F3", fg="white")
+maybe_button.config(font=("Arial", 14, "bold"), borderwidth=0, highlightthickness=0, highlightbackground="black", highlightcolor="black")
+maybe_button.place(relx=0.3, rely=0.9, anchor=tk.CENTER)
+
+# Gaming screen
+label_question = tk.Label(window, text="", font=("Arial", 14))
+label_question.pack()
+
+window.mainloop()
